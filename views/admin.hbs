@@ -1,0 +1,30 @@
+
+<h2>ADMIN-UI</h2>
+<div id="snackbar"></div>
+<form class="searchBox">
+  <input type="search" class="search" id ="search" placeholder="Search by Name,Email and Role..." onkeyup="searchUsers()">
+</form>
+<div class="entry">
+<table class="table1" id="table">
+<thead>
+<tr>
+<th><input type="checkbox" id="select-all" onclick="selectAll()"></th>
+<th>Name</th>
+<th>Email</th>
+<th>Role</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="users">
+</tbody>
+</table>
+</div>
+<div id="delete-all">
+<button class ="delete-All" onclick="deleteAll()"><image src="../images/trash.svg">All</button>
+</div>
+<div id ="pagination" class = "pagination">
+</div>
+<script src="./javascripts/admin.web.js"></script>
+<script>
+loadPageList();
+</script>

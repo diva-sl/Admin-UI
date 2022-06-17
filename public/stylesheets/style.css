@@ -1,0 +1,233 @@
+body {
+  font-family: 'Open Sans', sans-serif;
+  text-align: center;
+}
+
+
+form.searchBox {
+ 
+ border: none;
+ padding: 0;
+
+}
+
+input.search{
+  width: 70%;
+  border: 1px solid #555;
+  display: absolute;
+  opacity: 0.6;
+  padding: 9px 4px 9px 40px;
+  background-image:url( '../images/download.svg');
+  background-repeat: no-repeat;
+  background-position: 12px;
+
+}
+  
+
+table, th, td  {
+    border: 1px solid #DCDCDC;
+    border-collapse: collapse;
+    padding: 10px;
+    color : green;   
+
+}
+
+table{
+
+		width: 70%;
+}
+
+
+input[type="text"]{
+  border-collapse: collapse;
+  text-overflow: ellipsis;
+  text-align: center;
+  color : blue;  
+  top:0;
+  left:0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  border: none;
+  padding: 10px;
+  box-sizing: border-box;
+
+}
+
+input[type ="text"].edit-user {
+        
+        border: 1px solid #555;
+
+
+}
+
+
+table.table1   {
+
+  margin-left: auto;
+  margin-right: auto;
+
+
+}
+
+.entry {
+
+	padding-top: 20px;
+
+}
+
+
+img {
+
+margin-left : 10px;
+opacity: 0.7;
+
+}
+
+#delete img{
+
+margin-left: 0px;
+opacity: 0.7;
+
+
+}
+
+.delete-All {
+  text-align: 2px;
+  float: left;
+  display: inline-block;
+  margin-top: 10px;
+  margin-left: 3.5rem;
+  border-radius: 5px;
+  background-color: white; 
+  color: black;
+  height: 30px; 
+  border: 2px solid #f44336;
+}
+
+.delete-All:hover {
+  background-color: #f44336;
+  color: white;
+}
+
+
+.pagination {
+  display:inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 3rem;
+  margin: 1rem;
+  border-radius: 0.6rem;
+  background: #ffffff;
+  box-shadow: 0 1rem 2rem rgba(#5a6181, 0.05);
+
+}
+
+.pagination a {
+
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.2rem;
+    cursor: pointer;
+    border-radius: 0.4rem;
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+}
+
+
+.pagination a.active {
+
+ background-color: dodgerblue;
+ color: white;
+ pointer-events: none;
+
+}
+
+.pagination a:hover{
+
+  background-color: #ddd;
+}
+
+.pagination a.not-allowed{
+
+    cursor: not-allowed;
+
+}
+
+.pagination a.not-allowed{
+
+    pointer-events: none;   
+   
+}
+
+
+img {
+
+    cursor: pointer;
+
+}
+
+tr.selected {
+
+    background-color: #D3D3D3;
+    
+}
+tr.selected input[type="text"] {
+    
+    background-color: #D3D3D3;
+     
+
+}
+
+#snackbar {
+
+  visibility: hidden;
+  min-width: 100px;
+  margin-left: -200px;
+  background-color: #ffffff;
+  color: #ff0000;
+  text-align: center;
+  border-radius: 3px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 100%;
+  top: 30px;
+  font-size: 15px;
+
+}
+
+#snackbar.show {
+
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+
+  from {top: 0; opacity: 0;} 
+  to {top: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+
+  from {top: 0; opacity: 0;}
+  to {top: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+
+  from {top: 30px; opacity: 1;} 
+  to {top: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+
+  from {top: 30px; opacity: 1;}
+  to {top: 0; opacity: 0;}
+}
