@@ -12,6 +12,7 @@ let countPerEachPage =10;
 let eachPageList;
 
 var searchRecord;
+
 let tempSearch;
 let selected;  
 
