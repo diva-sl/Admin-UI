@@ -35,7 +35,7 @@ function loadPageList(){
         Name.innerHTML="<input type='text' value ="+ user.name +">";
         Email.innerHTML="<input type='text' value ="+ user.email +">";
         Role.innerHTML="<input type='text' value ="+ user.role +">";
-        Action.innerHTML='<img id="save" onclick="editUser('+ (idx+1) +')" src="../images/pencil-square.svg"/><img id="delete" onclick="deleteUser('+(idx+1)+')" src="../images/trash.svg"/>';
+        Action.innerHTML='<img id="edit" onclick="editUser('+ (idx+1) +')" src="../images/pencil-square.svg"/><img id="delete" onclick="deleteUser('+(idx+1)+')" src="../images/trash.svg"/>';
         row.append(check,Name,Email,Role,Action);
         tbody.appendChild(row);
 
@@ -180,19 +180,54 @@ function selectAll () {
 
 function editUser (index) {
     
-    let user = document.querySelectorAll('input[type = "text"]');
-    let row = document.querySelectorAll('tr');
-    console.log(row);
-    
-     fetch('/api/editUser?user='+user.value)
+    let row = document.querySelectorAll('tr')[index];
+    var editValue = row.cells[0].children[0].value;
+    let  saveImg=document.createElement('img');
+    saveImg.setAttribute('onclick','saveUser('+(index)+')');
+    saveImg.src='../images/save.svg';
+     fetch('/api/editUser?user='+editValue)
      .then(res => res.json())
      .then(user => {
-
-  
-     })
-
+     row.cells[1].children[0].setAttribute('class','edit');
+     row.cells[2].children[0].setAttribute('class','edit');
+     row.cells[3].children[0].setAttribute('class','edit');
+     row.cells[4].children[0].replaceWith(saveImg);
+     });
 }
 
+function saveUser (index) {
+    
+    let row = document.querySelectorAll('tr')[index];
+    var userName=row.cells[1].children[0].value;
+    var userEmail=row.cells[2].children[0].value;
+    var userRole=row.cells[3].children[0].value; 
+    let  editImg=document.createElement('img');
+    editImg.setAttribute('onclick','editUser('+(index)+')');
+    editImg.src='../images/pencil-square.svg';
+
+    fetch('/api/saveUser',{
+        method : 'POST',
+        headers : {
+            'Content-Type' : 'application/json',
+        },
+
+        body : JSON.stringify([userName,userEmail,userRole,index]),
+
+    })
+    .then(res => res.json())
+
+    .then(message => {
+        if(message =='ok'){
+     row.cells[1].children[0].setAttribute('class','');
+     row.cells[2].children[0].setAttribute('class','');
+     row.cells[3].children[0].setAttribute('class','');
+     row.cells[4].children[0].replaceWith(editImg);
+     }else {
+        alert(message);
+     }
+
+    })
+}
 
 
 
@@ -237,3 +272,4 @@ function deleteAll () {
 
 
 
+ 

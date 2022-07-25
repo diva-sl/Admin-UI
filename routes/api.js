@@ -94,6 +94,22 @@ router.get('/editUser',(req,res) => {
 
 })
 
+router.post('/saveUser',(req,res) => {
+
+  if (users.checkData(req.body)){
+  res.writeHead(200,{
+
+    'Content-Type' : 'application/json'
+  });
+  users.saveUser(req.body)
+  res.end(JSON.stringify('ok'));
+}else {
+    res.end(JSON.stringify('invalid enteries...'));
+}
+
+})
+
+
 
 router.get('/deleteUser',(req,res) => {
 
@@ -119,6 +135,7 @@ router.get('/deleteAll',(req,res) => {
   res.end(JSON.stringify(users.deleteAll()));
   
 })
+
 
 module.exports = router;
 

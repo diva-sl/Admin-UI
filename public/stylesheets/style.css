@@ -62,6 +62,13 @@ input[type ="text"].edit-user {
 }
 
 
+input[type ="text"].edit {
+        
+        border: 1px solid #555;
+
+}
+
+
 table.table1   {
 
   margin-left: auto;

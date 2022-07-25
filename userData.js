@@ -180,14 +180,34 @@ const editUser = (value) => {
         return userData.find(user => {
               if(user.id == value){
                user.edit = true; 
-        console.log(userData);
-
                return user;
         }
 
     });
 }
 
+
+const saveUser = (value) => {
+    
+    var save = value[value.length-1];
+    userData.map(user => {
+        if(user.id == save){
+            user.name = value[0];
+            user.email = value[1];
+            user.role = value[2];
+        }
+  })  
+
+}
+
+const checkData =(data) => {
+    
+    var pattern = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;; 
+    
+    var result = pattern.test(data[1]) && (data[2] == 'admin' || data[2]=='member');
+    
+     return result;
+}
 
 const deleteUser = (value) => {
       
@@ -234,6 +254,8 @@ module.exports = {
         selectUser,
         selectAll,
         editUser,
+        saveUser,
+        checkData,
         deleteUser,
         deleteAll
 
@@ -241,7 +263,7 @@ module.exports = {
 		
 }
 
-
+ 
 
 
 // const getWholePages = (length)=> {
