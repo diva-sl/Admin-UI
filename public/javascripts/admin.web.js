@@ -105,10 +105,14 @@ function pageSetup () {
 }
 
 function changePage (page) {
+      var x = document.getElementById("snackbar");
       
       fetch('/api/changePage?page='+page)
       .then(res => res.json())
       .then(page => {
+        x.innerHTML = 'Page  '+page;
+      x.className = "show";
+      setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
         loadPageList();
      
       })    
@@ -116,11 +120,16 @@ function changePage (page) {
 }
 
 function navigatePage (page) {
+    var x = document.getElementById("snackbar");
+
 
   fetch('/api/navigatePage?page='+page)
   .then(res => res.json())
   .then(page => {
 
+      x.innerHTML = 'Page '+page;
+      x.className = "show";
+      setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
       loadPageList();
 
   })
@@ -129,12 +138,19 @@ function navigatePage (page) {
  
 function searchUsers () {
 
+    var x = document.getElementById("snackbar");
+
    let searchValue  = document.getElementById('search').value;
 
     fetch('/api/searchInUsers?page=1&search='+searchValue)
     .then(res => res.json())
     .then(users =>  {
 
+
+      x.innerHTML = users.length != 0 ? users.length+' Record Found' : 'No record Found';
+      x.className = "show";
+      setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+         
     loadPageList();
     
  });
