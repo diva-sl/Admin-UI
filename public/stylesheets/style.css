@@ -22,19 +22,19 @@ input.search{
   background-position: 12px;
 
 }
-  
+
 
 table, th, td  {
-    border: 1px solid #DCDCDC;
-    border-collapse: collapse;
-    padding: 10px;
-    color : green;   
+  border: 1px solid #DCDCDC;
+  border-collapse: collapse;
+  padding: 10px;
+  color : green;   
 
 }
 
 table{
 
-		width: 70%;
+  width: 70%;
 }
 
 
@@ -55,16 +55,16 @@ input[type="text"]{
 }
 
 input[type ="text"].edit-user {
-        
-        border: 1px solid #555;
+  
+  border: 1px solid #555;
 
 
 }
 
 
 input[type ="text"].edit {
-        
-        border: 1px solid #555;
+  
+  border: 1px solid #555;
 
 }
 
@@ -86,15 +86,15 @@ table.table1   {
 
 img {
 
-margin-left : 10px;
-opacity: 0.7;
+  margin-left : 10px;
+  opacity: 0.7;
 
 }
 
 #delete img{
 
-margin-left: 0px;
-opacity: 0.7;
+  margin-left: 0px;
+  opacity: 0.7;
 
 
 }
@@ -134,17 +134,17 @@ opacity: 0.7;
 
 .pagination a {
 
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0.2rem;
-    cursor: pointer;
-    border-radius: 0.4rem;
-    color: black;
-    float: left;
-    padding: 8px 16px;
-    text-decoration: none;
-    transition: background-color .3s;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.2rem;
+  cursor: pointer;
+  border-radius: 0.4rem;
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
 }
 
 
@@ -163,32 +163,32 @@ opacity: 0.7;
 
 .pagination a.not-allowed{
 
-    cursor: not-allowed;
+  cursor: not-allowed;
 
 }
 
 .pagination a.not-allowed{
 
-    pointer-events: none;   
-   
+  pointer-events: none;   
+  
 }
 
 
 img {
 
-    cursor: pointer;
+  cursor: pointer;
 
 }
 
 tr.selected {
 
-    background-color: #D3D3D3;
-    
+  background-color: #D3D3D3;
+  
 }
 tr.selected input[type="text"] {
-    
-    background-color: #D3D3D3;
-     
+  
+  background-color: #D3D3D3;
+  
 
 }
 

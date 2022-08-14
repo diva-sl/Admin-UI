@@ -7,31 +7,31 @@ const user=require('../admin');
 /* GET users listing. */
 router.get('/loadPage',(req, res) => {
     res.writeHead(200,{
-	    	'Content-Type':'application/json'
-	})
-  
+      'Content-Type':'application/json'
+  })
+    
 
-	  res.end(JSON.stringify(users.loadPages()));	
+    res.end(JSON.stringify(users.loadPages()));	
 });
 
-  
 
- router.get('/pageSetup',(req,res) => {
 
- 	  res.writeHead(200,{
-	    	'Content-Type':'application/json'
-	})
+router.get('/pageSetup',(req,res) => {
+
+    res.writeHead(200,{
+      'Content-Type':'application/json'
+  })
     
-	  res.end(JSON.stringify(users.pageSetup()));	
+    res.end(JSON.stringify(users.pageSetup()));	
 
- });
+});
 
 
 router.get('/searchInUsers',(req, res) => {
 
     res.writeHead(200,{
         'Content-Type':'application/json'
-  });
+    });
 
 
     res.end(JSON.stringify(users.searchInUsers(req.query.search))); 
@@ -39,21 +39,21 @@ router.get('/searchInUsers',(req, res) => {
 
 
 router.get('/changePage',(req,res) => {
-     
+   
     res.writeHead(200,{
         'Content-Type':'application/json'
-  });
+    });
 
-      
+    
     res.end(JSON.stringify(users.changePage(req.query.page)));
 
 })
 
 router.get('/navigatePage',(req,res) => {
-     
+   
     res.writeHead(200,{
         'Content-Type':'application/json'
-  });
+    });
 
 
     res.end(JSON.stringify(users.navigatePage(req.query.page)));
@@ -65,17 +65,17 @@ router.get('/selectUser',(req,res) => {
     res.writeHead(200,{
         'Content-Type' : 'application/json'
     });
-  
+    
     res.end(JSON.stringify(users.selectUser(req.query.select)));
 
 })
 
 
 router.get('/selectAll',(req,res) => {
-     
+   
     res.writeHead(200,{
         'Content-Type':'application/json'
-  });
+    });
 
     res.end(JSON.stringify(users.selectAll(req.query.select)));
 
@@ -87,7 +87,7 @@ router.get('/editUser',(req,res) => {
   res.writeHead(200,{
 
     'Content-Type' : 'application/json'
-  });
+});
   
 
   res.end(JSON.stringify(users.editUser(req.query.user)));
@@ -97,13 +97,13 @@ router.get('/editUser',(req,res) => {
 router.post('/saveUser',(req,res) => {
 
   if (users.checkData(req.body)){
-  res.writeHead(200,{
+      res.writeHead(200,{
 
-    'Content-Type' : 'application/json'
-  });
-  users.saveUser(req.body)
-  res.end(JSON.stringify('ok'));
-}else {
+        'Content-Type' : 'application/json'
+    });
+      users.saveUser(req.body)
+      res.end(JSON.stringify('ok'));
+  }else {
     res.end(JSON.stringify('invalid enteries...'));
 }
 
@@ -116,11 +116,11 @@ router.get('/deleteUser',(req,res) => {
   res.writeHead(200,{
 
     'Content-Type' : 'application/json'
-  });
+});
   
-   users.deleteUser(req.query.user);
+  users.deleteUser(req.query.user);
   
-   res.end(JSON.stringify('User Record was deletetd'));
+  res.end(JSON.stringify('User Record was deletetd'));
 
 })
 router.get('/deleteAll',(req,res) => {
@@ -130,7 +130,7 @@ router.get('/deleteAll',(req,res) => {
 
     'Content-Type' : 'application/json'
 
-  })
+})
 
   res.end(JSON.stringify(users.deleteAll()));
   
