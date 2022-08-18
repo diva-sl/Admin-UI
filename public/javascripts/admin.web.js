@@ -32,52 +32,52 @@ async function renderUsersList() {
   });
 }
 
-function renderPagination() {
+async function renderPagination() {
+  const { countOfPages, presentPage } = await fetch('/api/pageSetup').then(
+    (res) => res.json()
+  );
+
   const pagination = document.getElementById('pagination');
 
-  fetch('/api/pageSetup')
-    .then((res) => res.json())
-    .then(({ countOfPages, presentPage }) => {
-      pagination.innerHTML = '';
+  pagination.innerHTML = '';
 
-      const firstPage = document.createElement('a');
-      const previousPage = document.createElement('a');
-      const nextPage = document.createElement('a');
-      const lastPage = document.createElement('a');
+  const firstPage = document.createElement('a');
+  const previousPage = document.createElement('a');
+  const nextPage = document.createElement('a');
+  const lastPage = document.createElement('a');
 
-      firstPage.innerHTML = '&laquo;';
-      previousPage.innerHTML = '&lsaquo;';
+  firstPage.innerHTML = '&laquo;';
+  previousPage.innerHTML = '&lsaquo;';
 
-      firstPage.className = presentPage == 1 ? 'not-allowed' : '';
-      previousPage.className = presentPage == 1 ? 'not-allowed' : '';
-      firstPage.onclick = () => changePage(1);
-      firstPage.innerHTML = '&laquo;';
-      previousPage.onclick = () => navigatePage(presentPage - 1);
-      previousPage.innerHTML = '&lsaquo;';
+  firstPage.className = presentPage == 1 ? 'not-allowed' : '';
+  previousPage.className = presentPage == 1 ? 'not-allowed' : '';
+  firstPage.onclick = () => changePage(1);
+  firstPage.innerHTML = '&laquo;';
+  previousPage.onclick = () => navigatePage(presentPage - 1);
+  previousPage.innerHTML = '&lsaquo;';
 
-      pagination.append(firstPage, previousPage);
+  pagination.append(firstPage, previousPage);
 
-      for (let i = 1; i <= countOfPages; i++) {
-        const page = document.createElement('a');
-        page.className = presentPage == i ? 'active' : '';
-        page.onclick = () => changePage(i);
-        page.innerHTML = i;
-        pagination.append(page);
-      }
-      lastPage.className = presentPage == countOfPages ? 'not-allowed' : '';
-      nextPage.className = presentPage == countOfPages ? 'not-allowed' : '';
-      nextPage.innerHTML = '&rsaquo;';
-      lastPage.innerHTML = '&raquo;';
+  for (let i = 1; i <= countOfPages; i++) {
+    const page = document.createElement('a');
+    page.className = presentPage == i ? 'active' : '';
+    page.onclick = () => changePage(i);
+    page.innerHTML = i;
+    pagination.append(page);
+  }
+  lastPage.className = presentPage == countOfPages ? 'not-allowed' : '';
+  nextPage.className = presentPage == countOfPages ? 'not-allowed' : '';
+  nextPage.innerHTML = '&rsaquo;';
+  lastPage.innerHTML = '&raquo;';
 
-      presentPage = Number(presentPage);
+  presentPage = Number(presentPage);
 
-      nextPage.onclick = () => navigatePage(presentPage + 1);
-      nextPage.innerHTML = '&rsaquo;';
-      lastPage.onclick = () => changePage(countOfPages);
-      lastPage.innerHTML = '&raquo;';
+  nextPage.onclick = () => navigatePage(presentPage + 1);
+  nextPage.innerHTML = '&rsaquo;';
+  lastPage.onclick = () => changePage(countOfPages);
+  lastPage.innerHTML = '&raquo;';
 
-      pagination.append(nextPage, lastPage);
-    });
+  pagination.append(nextPage, lastPage);
 }
 
 function changePage(page) {
@@ -238,5 +238,5 @@ function deleteAll() {
 
 async function init() {
   await renderUsersList();
-  renderPagination();
+  await renderPagination();
 }
