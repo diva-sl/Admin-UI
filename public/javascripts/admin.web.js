@@ -1,46 +1,38 @@
-function loadPageList() {
+async function renderUsersList() {
+  const pagelist = await fetch('/api/loadPage').then((res) => res.json());
   const tbody = document.getElementById('users');
+  tbody.innerHTML = '';
+  pagelist.forEach((user, idx) => {
+    const row = document.createElement('tr');
 
-  fetch('/api/loadPage')
-    .then((res) => res.json())
-    .then((pagelist) => {
-      tbody.innerHTML = '';
-      var temp;
-
-      pagelist.forEach((user, idx) => {
-        const row = document.createElement('tr');
-
-        row.className = user.hasOwnProperty('checked') ? 'selected' : '';
-        const check = document.createElement('td');
-        const checkbox = document.createElement('input');
-        checkbox.setAttribute('type', 'checkbox');
-        checkbox.onclick = () => selectUser(idx + 1);
-        const Name = document.createElement('td');
-        const Email = document.createElement('td');
-        const Role = document.createElement('td');
-        const Action = document.createElement('td');
-        Action.setAttribute('class', 'editDelete');
-        checkbox.checked = user.hasOwnProperty('checked');
-        checkbox.value = user.id;
-        check.appendChild(checkbox);
-        Name.innerHTML = "<input type='text' value =" + user.name + '>';
-        Email.innerHTML = "<input type='text' value =" + user.email + '>';
-        Role.innerHTML = "<input type='text' value =" + user.role + '>';
-        Action.innerHTML =
-          '<img id="edit" onclick="editUser(' +
-          (idx + 1) +
-          ')" src="../images/pencil-square.svg"/><img id="delete" onclick="deleteUser(' +
-          (idx + 1) +
-          ')" src="../images/trash.svg"/>';
-        row.append(check, Name, Email, Role, Action);
-        tbody.appendChild(row);
-      });
-    });
-
-  pageSetup();
+    row.className = user.hasOwnProperty('checked') ? 'selected' : '';
+    const check = document.createElement('td');
+    const checkbox = document.createElement('input');
+    checkbox.setAttribute('type', 'checkbox');
+    checkbox.onclick = () => selectUser(idx + 1);
+    const Name = document.createElement('td');
+    const Email = document.createElement('td');
+    const Role = document.createElement('td');
+    const Action = document.createElement('td');
+    Action.setAttribute('class', 'editDelete');
+    checkbox.checked = user.hasOwnProperty('checked');
+    checkbox.value = user.id;
+    check.appendChild(checkbox);
+    Name.innerHTML = "<input type='text' value =" + user.name + '>';
+    Email.innerHTML = "<input type='text' value =" + user.email + '>';
+    Role.innerHTML = "<input type='text' value =" + user.role + '>';
+    Action.innerHTML =
+      '<img id="edit" onclick="editUser(' +
+      (idx + 1) +
+      ')" src="../images/pencil-square.svg"/><img id="delete" onclick="deleteUser(' +
+      (idx + 1) +
+      ')" src="../images/trash.svg"/>';
+    row.append(check, Name, Email, Role, Action);
+    tbody.appendChild(row);
+  });
 }
 
-function pageSetup() {
+function renderPagination() {
   const pagination = document.getElementById('pagination');
 
   fetch('/api/pageSetup')
@@ -243,7 +235,8 @@ function deleteAll() {
       loadPageList();
     });
 }
- 
-function init () {
-    loadPageList();
-} 
+
+async function init() {
+  await renderUsersList();
+  renderPagination();
+}
