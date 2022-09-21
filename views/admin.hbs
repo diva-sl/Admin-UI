@@ -15,7 +15,17 @@
 <th>Action</th>
 </tr>
 </thead>
-<tbody id="users">
+<script src="./javascripts/admin.web.js"></script>
+<script id="userList" type="text/x-handlebars-template"></script>
+<tbody id="listUsers">
+  {{#each users}}
+    <td><input type='checkbox'>{{this.id}}</td>
+    <td>{{this.name}}</td>
+    <td><{{this.email}}</td>
+    <td>{{this.role}}</td>
+    <td>{{this.action}}</td>
+  {{/each}}
+</ul>
 </tbody>
 </table>
 </div>
@@ -24,7 +34,6 @@
 </div>
 <div id ="pagination" class = "pagination">
 </div>
-<script src="./javascripts/admin.web.js"></script>
 <script>
-loadPageList();
+loadPageList()
 </script>
