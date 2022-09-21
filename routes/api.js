@@ -2,27 +2,24 @@ var express = require('express');
 var router = express.Router();
 const url = require('url');
 const users = require('../userData');
-const user=require('../admin'); 
 
 /* GET users listing. */
-router.get('/loadPage',(req, res) => {
+router.get('/loadUsersList',(req, res) => {
     res.writeHead(200,{
       'Content-Type':'application/json'
   })
-    
-
-    res.end(JSON.stringify(users.loadPages()));	
+    res.end(JSON.stringify(users.loadPages())); 
 });
 
 
 
-router.get('/pageSetup',(req,res) => {
+router.get('/pagination',(req,res) => {
 
     res.writeHead(200,{
       'Content-Type':'application/json'
   })
     
-    res.end(JSON.stringify(users.pageSetup()));	
+    res.end(JSON.stringify(users.pageSetup())); 
 
 });
 
@@ -138,12 +135,3 @@ router.get('/deleteAll',(req,res) => {
 
 
 module.exports = router;
-
-  // <a href="#">&laquo;</a>
-  // <a href="#">1</a>
-  // <a href="#" class="active">2</a>
-  // <a href="#">3</a>
-  // <a href="#">4</a>
-  // <a href="#">5</a>
-  // <a href="#">6</a>
-  // <a href="#">&raquo;</a>

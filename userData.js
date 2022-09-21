@@ -1,8 +1,8 @@
 const fs=require('fs')
 
-let mainSource = JSON.parse(fs.readFileSync('./userdata/mainDb.json').toString() || '{}')
+// let mainSource = JSON.parse(fs.readFileSync('./userdata/mainDb.json').toString() || '{}')
 
-let userData = JSON.parse(fs.readFileSync('./userdata/members.json').toString() || '{}');
+let userData = JSON.parse(fs.readFileSync('./members.json').toString() || '{}');
 
 
 
@@ -140,7 +140,7 @@ const selectUser = (select) => {
             delete user.checked;
         }
 
-        }
+}
 
     });
 
@@ -258,57 +258,10 @@ module.exports = {
         checkData,
         deleteUser,
         deleteAll
-
-
 		
 }
 
  
-
-
-// const getWholePages = (length)=> {
-
-// return Math.ceil(length/10);
-
-// }
-
-// const getIndexRecord = (page) => {
-
-// 	return (page -1)* 10;
-// }
-
-// const searchUsers = (search,users) => {
-
-// 	let userSearch = search.toLowercase();
-// 	return users.map((user) => {
-
-// 		if(user.name.toLowercase().includes(userSearch) || user.email.toLowercase().includes(userSearch) || user.role.toLowercase().includes(userSearch)){
-
-// 	       user.show = true;
-// 	       return user;		
-// 		} 
-// 		user.show = false;
-// 		return user;
-// 	}) 
-// }
-
-// const userResponse = (users) => {
-// 	return users.map(user => {
-// 		user.selected = false;
-// 		user.edit = false;
-// 		user.show = true;
-// 		return user;
-// 	})
-// }
-
-
-// module.exports = {
-
-// 	getWholePages,
-// 	getIndexRecord,
-// 	searchUsers,
-// 	userResponse
-// }
 
 
 
