@@ -4,13 +4,13 @@ const url = require('url');
 const users = require('../userData');
 
 /* GET users listing. */
-router.get('/loadUsersList',(req, res) => {
-    res.writeHead(200,{
-      'Content-Type':'application/json'
-  })
-    res.end(JSON.stringify(users.loadPages())); 
+router.get('/users',(req, res) => {
+  const {pageno = 1, size = 10} = req.query;
+  res.writeHead(200,{
+    'Content-Type':'application/json'
+  });
+  res.end(JSON.stringify(users.getPage(pageno, size)));
 });
-
 
 
 router.get('/pagination',(req,res) => {
@@ -19,7 +19,7 @@ router.get('/pagination',(req,res) => {
       'Content-Type':'application/json'
   })
     
-    res.end(JSON.stringify(users.pageSetup())); 
+    res.end(JSON.stringify(users.paginatioSetup())); 
 
 });
 
@@ -35,16 +35,6 @@ router.get('/searchInUsers',(req, res) => {
 });
 
 
-router.get('/changePage',(req,res) => {
-   
-    res.writeHead(200,{
-        'Content-Type':'application/json'
-    });
-
-    
-    res.end(JSON.stringify(users.changePage(req.query.page)));
-
-})
 
 router.get('/navigatePage',(req,res) => {
    
@@ -68,13 +58,13 @@ router.get('/selectUser',(req,res) => {
 })
 
 
-router.get('/selectAll',(req,res) => {
+router.get('/selectAllUsers',(req,res) => {
    
     res.writeHead(200,{
         'Content-Type':'application/json'
     });
 
-    res.end(JSON.stringify(users.selectAll(req.query.select)));
+    res.end(JSON.stringify(users.selectAll()));
 
 })
 
