@@ -14,11 +14,12 @@ let eachPageList;
 var searchRecord;
 
 let tempSearch;
-let selected;  
+let resUsersData;  
 
 const getPage = (pageno, size) => {
     presentPage = pageno;
-    return userData.slice(((pageno - 1)*size),pageno * size);
+    resUsersData = userData.slice(((pageno - 1)*size),pageno * size); 
+    return resUsersData;
 
 };
 
@@ -57,7 +58,7 @@ const paginationSetup = () => {
    }else{
       countOfPages=Math.ceil(Object.keys(userData).length / countPerEachPage);
   }
-
+     
   return countOfPages;
 
 }
@@ -155,7 +156,26 @@ const selectUser = (select) => {
 }
 
 
+const selectAllUsers = (select) => {
+  if(select == 'true'){
+    resUsersData.filter(resUser => { 
+        userData.forEach(user => {
+          if(resUser.id == user.id){
+            user.checked = true;
+        } 
+    });
 
+    });
+
+}
+else{
+    userData.forEach(user => {
+        delete user.checked;
+    })
+}
+return resUsersData.length;
+
+}
 
 
 const selectAll = (select) => {
@@ -259,6 +279,7 @@ module.exports = {
     navigatePage,
     selectUser,
     selectAll,
+    selectAllUsers,
     editUser,
     saveUser,
     checkData,

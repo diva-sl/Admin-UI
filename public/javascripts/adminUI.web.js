@@ -12,35 +12,29 @@ function setState(newState) {
 
 
 async function init(){
-    
-    let {pageno,size} = queryParams();
-    
 
-    if(pageno == null){
-        pageno = 1;
-        size = 10;
-    }   
-
+    const {pageno=1,size=10} = queryParams();
+    
 
     const paginationData = await fetch('/api/pagination').then((res) => res.json());
 
     setState({
         currentPage:pageno,
         users: await fetch(`/api/users?pageno=${pageno}&size=${size}`).then((res) => res.json()),
-        totalNoOfPages:paginationData.countOfPages,
+        totalNoOfPages:paginationData,
     });
 
     const state  = getState();
-
+     
     renderUsersTable(state.users);
     renderPagination(state.currentPage, state.totalNoOfPages);
 }
 
 
 function renderPagination(currentPage,totalNoOfPages){
-    
+
     let numberedPageButtons = '';
-    
+
     for (let i=1;i<=totalNoOfPages;i++){
         numberedPageButtons += `<a ${currentPage==i ? 'class="active"' : ''} href="/admin.html?pageno=${i}&size=10">`+
         `${i}` +
@@ -74,14 +68,27 @@ function onJumpPage(pageno) {
 
 }
 
-function onUserSelect() {
-    global.state.users[index].checked = true | false;
-    renderUsersTable(global.state.users);
+function onUserSelect(index) {
+ 
+     let checkbox = document.querySelectorAll('input[type = "checkbox"]')[index];;    
+console.log(checkbox)
+
+     // const checked = fetch('/api/userSelect?select='+index+'&check='+checkbox.checked).then((res) => res.json());
+
+    if(checkbox.checked == undefined){
+       checkbox.checked = true;        
+    }else {
+        delete checkbox.checked
+    }
+
+    // checkbox =  check == 'true' ? true : delete checkbox.checked;  
+
+    renderUsersTable(GLOBAL_STATE.state.users);
 }
 
 function onAllUsersSelect() {
-
-    renderUsersTable(global.state.users);
+    GLOBAL_STATE.state.allUsersSelected = !GLOBAL_STATE.state.allUsersSelected;
+    renderUsersTable(GLOBAL_STATE.state.users);
 }
 
 function onDelete() {
@@ -113,11 +120,13 @@ function onPrevPage() {
 
 
 function renderUsersTable(usersData) {
+  const allSelected = GLOBAL_STATE.state.allUsersSelected;
+  console.log(allSelected);
   const usersTableDiv = document.getElementById('usersTableDiv');
   usersTableDiv.innerHTML = '<table class="table1" id="table">' +
   "<thead>" +
   "<tr>" +
-  "<th><input type='checkbox' id='select-all' onclick='onAllUsersSelect()'></th>" +
+  `<th><input type='checkbox' id='select-all' onclick='onAllUsersSelect()' ${allSelected?'checked':''}></th>` +
   "<th>Name</th>" +
   "<th>Email</th>" +
   "<th>Role</th>" +
@@ -138,8 +147,8 @@ function renderUsersTBodyRows(usersData) {
       let html = `<tr ${userData.hasOwnProperty('checked') ? 'class="selected"' : ''}>` +
       `<td><input type="checkbox" ` +
       `       ${userData.hasOwnProperty('checked') ? 'checked="true"' : ''}` +
-      `       value=${userData.id}` +
-      `       onclick="selectUser(${idx + 1})"></td>` +
+      `       value=${userData.id}` + 
+      `       onclick="onUserSelect(${idx})"></td>` +
       `<td><input type='text' value ="${userData.name}"></td>` +
       `<td><input type='text' value ="${userData.email}"></td>` +
       `<td><input type='text' value ="${userData.role}"></td>` +

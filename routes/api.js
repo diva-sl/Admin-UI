@@ -9,7 +9,7 @@ router.get('/users',(req, res) => {
   res.writeHead(200,{
     'Content-Type':'application/json'
   });
-  res.end(JSON.stringify(users.getPage(pageno, size)));
+  res.end(JSON.stringify(users.getPage(pageno,size))); 
 });
 
 
@@ -19,7 +19,7 @@ router.get('/pagination',(req,res) => {
       'Content-Type':'application/json'
   })
     
-    res.end(JSON.stringify(users.paginatioSetup())); 
+    res.end(JSON.stringify(users.paginationSetup())); 
 
 });
 
@@ -47,24 +47,25 @@ router.get('/navigatePage',(req,res) => {
 
 })
 
-router.get('/selectUser',(req,res) => {
-
+router.get('/userSelect',(req,res) => {
+  const {select , check} = req.query
+console.log(select,check);
     res.writeHead(200,{
         'Content-Type' : 'application/json'
     });
     
-    res.end(JSON.stringify(users.selectUser(req.query.select)));
+    res.end(JSON.stringify(users.selectUser(select,check)));
 
 })
 
 
-router.get('/selectAllUsers',(req,res) => {
+router.get('/allUsersSelect',(req,res) => {
    
     res.writeHead(200,{
         'Content-Type':'application/json'
     });
-
-    res.end(JSON.stringify(users.selectAll()));
+    
+    res.end(JSON.stringify(users.selectAllUsers(req.query.select)));
 
 })
 
