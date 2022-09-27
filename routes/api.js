@@ -13,71 +13,51 @@ router.get('/users',(req, res) => {
 });
 
 
-router.get('/pagination',(req,res) => {
+router.delete('/user',(req,res) => {
 
-    res.writeHead(200,{
-      'Content-Type':'application/json'
-  })
-    
-    res.end(JSON.stringify(users.paginationSetup())); 
-
-});
-
-
-router.get('/searchInUsers',(req, res) => {
-
-    res.writeHead(200,{
-        'Content-Type':'application/json'
-    });
-
-
-    res.end(JSON.stringify(users.searchInUsers(req.query.search))); 
-});
-
-
-
-router.get('/navigatePage',(req,res) => {
-   
-    res.writeHead(200,{
-        'Content-Type':'application/json'
-    });
-
-
-    res.end(JSON.stringify(users.navigatePage(req.query.page)));
-
-})
-
-router.get('/userSelect',(req,res) => {
-  const {select , check} = req.query
-console.log(select,check);
-    res.writeHead(200,{
-        'Content-Type' : 'application/json'
-    });
-    
-    res.end(JSON.stringify(users.selectUser(select,check)));
-
-})
-
-
-router.get('/allUsersSelect',(req,res) => {
-   
-    res.writeHead(200,{
-        'Content-Type':'application/json'
-    });
-    
-    res.end(JSON.stringify(users.selectAllUsers(req.query.select)));
-
-})
-
-
-router.get('/editUser',(req,res) => {
 
   res.writeHead(200,{
 
     'Content-Type' : 'application/json'
-});
+  });
   
+  users.deleteUser(req.query.id);
+  
+  res.end(JSON.stringify('User Record was deletetd'));
 
+})
+
+router.get('/pagination',(req,res) => {
+
+  res.writeHead(200,{
+    'Content-Type':'application/json'
+  })
+
+  res.end(JSON.stringify(users.paginationSetup())); 
+
+});
+
+
+
+router.get('/users/search',(req, res) => {
+
+  res.writeHead(200,{
+    'Content-Type':'application/json'
+  });
+
+
+  res.end(JSON.stringify(users.searchInUsers(req.query.search))); 
+});
+
+//edit user
+router.post('/user/:id',(req,res) => {
+
+  res.writeHead(200,{
+
+    'Content-Type' : 'application/json'
+  });
+  
+ users.saveUser(req.params.id, req.body)
   res.end(JSON.stringify(users.editUser(req.query.user)));
 
 })
@@ -85,32 +65,20 @@ router.get('/editUser',(req,res) => {
 router.post('/saveUser',(req,res) => {
 
   if (users.checkData(req.body)){
-      res.writeHead(200,{
+    res.writeHead(200,{
 
-        'Content-Type' : 'application/json'
+      'Content-Type' : 'application/json'
     });
-      users.saveUser(req.body)
-      res.end(JSON.stringify('ok'));
+    users.saveUser(req.body)
+    res.end(JSON.stringify('ok'));
   }else {
     res.end(JSON.stringify('invalid enteries...'));
-}
+  }
 
 })
 
 
 
-router.get('/deleteUser',(req,res) => {
-
-  res.writeHead(200,{
-
-    'Content-Type' : 'application/json'
-});
-  
-  users.deleteUser(req.query.user);
-  
-  res.end(JSON.stringify('User Record was deletetd'));
-
-})
 router.get('/deleteAll',(req,res) => {
 
 
@@ -118,7 +86,7 @@ router.get('/deleteAll',(req,res) => {
 
     'Content-Type' : 'application/json'
 
-})
+  })
 
   res.end(JSON.stringify(users.deleteAll()));
   

@@ -64,6 +64,12 @@ const paginationSetup = () => {
 }
 
 
+const deleteUser = (id) => {
+
+    resUsersData = userData.splice(userData.findIndex(user => user.id === id ),1);  
+
+}
+
 const searchInUsers = (search) => {
 
  tempSearch = search.toLowerCase();
@@ -127,10 +133,7 @@ return presentPage;
 }
 
 
-const selectUser = (select) => {
-
-    const [check,value] = select.split(',');
-    
+const selectUser = (index) => {
 
     userData.filter(user => {
 
@@ -235,7 +238,7 @@ const checkData =(data) => {
     return result;
 }
 
-const deleteUser = (value) => {
+const deleteUser1 = (value) => {
 
     userData.map((user,idx) => {
         if(user.id == value){

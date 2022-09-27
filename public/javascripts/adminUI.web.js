@@ -25,7 +25,7 @@ async function init(){
     });
 
     const state  = getState();
-     
+
     renderUsersTable(state.users);
     renderPagination(state.currentPage, state.totalNoOfPages);
 }
@@ -51,51 +51,34 @@ function renderPagination(currentPage,totalNoOfPages){
 
 }
 
-function onJumpPage(pageno) {
-
- const pageNumber = fetch('/api/jumpPage?page='+pageno).then((res) => res.json());
-
-    // setState({
-    //      currentPage: pageno,
-
-    //  });
-    // console.log(pageNumber);
-    // console.log(getState());
-    init();
-    const state  = getState();
-    renderUsersTable(state.users);
-    renderPagination(state.currentPage, state.totalNoOfPages);
-
-}
 
 function onUserSelect(index) {
- 
-     let checkbox = document.querySelectorAll('input[type = "checkbox"]')[index];;    
-console.log(checkbox)
-
-     // const checked = fetch('/api/userSelect?select='+index+'&check='+checkbox.checked).then((res) => res.json());
-
-    if(checkbox.checked == undefined){
-       checkbox.checked = true;        
-    }else {
-        delete checkbox.checked
-    }
-
-    // checkbox =  check == 'true' ? true : delete checkbox.checked;  
-
-    renderUsersTable(GLOBAL_STATE.state.users);
+// GLOBAL_STATE.state.userSelected = !GLOBAL_STATE.state.userSelected;
+if(GLOBAL_STATE.state.users[index].checked== undefined){
+   GLOBAL_STATE.state.users[index].checked = true;        
+}else {
+    delete GLOBAL_STATE.state.users[index].checked
+}
+renderUsersTable(GLOBAL_STATE.state.users);
 }
 
 function onAllUsersSelect() {
     GLOBAL_STATE.state.allUsersSelected = !GLOBAL_STATE.state.allUsersSelected;
+    GLOBAL_STATE.state.users.map(user => {
+     if(GLOBAL_STATE.state.allUsersSelected){
+        user.checked = true ;
+    }else{
+        delete user.checked
+    }
+});
     renderUsersTable(GLOBAL_STATE.state.users);
 }
 
-function onDelete() {
-    api(deleteUser, id)
-    global.state = {currentPage:0, users: api(userData)};
-    renderUsersTable(global.state.users);
-    renderPagination(global.state.currentPage, global.state.totalNoOfPages);
+async function onDelete(id) {
+
+    const deletedUser=fetch(`/api/deleteUser?id=${id}`).then((res)=> res.json());
+    
+    init(); 
 }
 
 function onDeleteAll() {
@@ -121,7 +104,6 @@ function onPrevPage() {
 
 function renderUsersTable(usersData) {
   const allSelected = GLOBAL_STATE.state.allUsersSelected;
-  console.log(allSelected);
   const usersTableDiv = document.getElementById('usersTableDiv');
   usersTableDiv.innerHTML = '<table class="table1" id="table">' +
   "<thead>" +
@@ -143,7 +125,8 @@ function renderUsersTable(usersData) {
 }
 
 function renderUsersTBodyRows(usersData) {
-  return usersData.map((userData, idx) => {
+    // const userSelected = GLOBAL_STATE.state.UserSelected;
+    return usersData.map((userData, idx) => {
       let html = `<tr ${userData.hasOwnProperty('checked') ? 'class="selected"' : ''}>` +
       `<td><input type="checkbox" ` +
       `       ${userData.hasOwnProperty('checked') ? 'checked="true"' : ''}` +
@@ -154,7 +137,7 @@ function renderUsersTBodyRows(usersData) {
       `<td><input type='text' value ="${userData.role}"></td>` +
       `<td class="editDelete">` +
       `       <img id="edit" onclick="editUser(${idx + 1})" src="/images/pencil-square.svg"/>` +
-      `       <img id="delete" onclick="deleteUser(${idx + 1})" src="/images/trash.svg"/>` +
+      `       <img id="delete" onclick="onDelete(${userData.id})" src="/images/trash.svg"/>` +
       `</td>` +
       `</tr>`;
 
@@ -169,5 +152,24 @@ function queryParams(){
         obj[k]= v;
         return obj;
     }, {});
+
+}
+
+
+
+function onJumpPage(pageno) {
+
+ const pageNumber = fetch('/api/jumpPage?page='+pageno).then((res) => res.json());
+
+    // setState({
+    //      currentPage: pageno,
+
+    //  });
+    // console.log(pageNumber);
+    // console.log(getState());
+    init();
+    const state  = getState();
+    renderUsersTable(state.users);
+    renderPagination(state.currentPage, state.totalNoOfPages);
 
 }
