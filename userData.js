@@ -66,9 +66,25 @@ const paginationSetup = () => {
 
 const deleteUser = (id) => {
 
+
     resUsersData = userData.splice(userData.findIndex(user => user.id === id ),1);  
 
 }
+
+const deleteAll = (ids) => {
+
+    let userIds = ids.split(',');
+
+    userIds.map(id => {
+
+        userData.splice(userData.findIndex(user => user.id === id ),1)
+    
+    });
+   return userIds.length;
+
+}
+
+
 
 const searchInUsers = (search) => {
 
@@ -250,7 +266,7 @@ const deleteUser1 = (value) => {
 }
 
 
-const deleteAll = () => {
+const deleteAll1 = () => {
 
     let count = 0;
 

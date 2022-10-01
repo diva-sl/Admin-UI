@@ -13,19 +13,31 @@ router.get('/users',(req, res) => {
 });
 
 
-router.delete('/user',(req,res) => {
-
+router.delete('/user/delete/:id',(req,res) => {
 
   res.writeHead(200,{
 
     'Content-Type' : 'application/json'
   });
   
-  users.deleteUser(req.query.id);
+  users.deleteUser(req.params.id);
+
   
   res.end(JSON.stringify('User Record was deletetd'));
 
 })
+
+router.delete('/user/deleteAll/:ids',(req,res) => {
+
+res.writeHead(200,{
+    'Content-Type':'application/json'
+  })
+
+  res.end(JSON.stringify(users.deleteAll(req.params.ids))); 
+  
+})
+
+
 
 router.get('/pagination',(req,res) => {
 
@@ -78,19 +90,6 @@ router.post('/saveUser',(req,res) => {
 })
 
 
-
-router.get('/deleteAll',(req,res) => {
-
-
-  res.writeHead(200,{
-
-    'Content-Type' : 'application/json'
-
-  })
-
-  res.end(JSON.stringify(users.deleteAll()));
-  
-})
 
 
 module.exports = router;

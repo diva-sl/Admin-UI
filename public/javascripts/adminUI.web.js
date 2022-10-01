@@ -74,18 +74,26 @@ function onAllUsersSelect() {
     renderUsersTable(GLOBAL_STATE.state.users);
 }
 
-async function onDelete(id) {
+function onDelete(id) {
 
-    const deletedUser=fetch(`/api/deleteUser?id=${id}`).then((res)=> res.json());
+    const deletedUser = fetch(`/api/user/delete/${id}`,{method :'DELETE'}).then((res)=> res.json());
     
     init(); 
 }
 
 function onDeleteAll() {
-    api(deleteAllUser, id)
-    global.state = {currentPage:0, users: api(userData)};
-    renderUsersTable(global.state.users);
-    renderPagination(global.state.currentPage, global.state.totalNoOfPages);
+
+	const userIds = [];
+
+	GLOBAL_STATE.state.users.map((user) => {
+		if(user.checked == true){
+			userIds.push(user.id);
+		}  
+	});
+
+	const deletedAllUser = fetch(`/api/user/deleteAll/${userIds}`,{method : 'DELETE'}).then((res) => res.json());
+
+	init();
 }
 
 function onNextPage() {
