@@ -7,6 +7,7 @@ function getState () {
 
 function setState(newState) {
 	GLOBAL_STATE.state = newState; 
+    return newState;
 }
 
 
@@ -22,6 +23,7 @@ async function init(){
 		currentPage:pageno,
 		users: await fetch(`/api/users?pageno=${pageno}&size=${size}`).then((res) => res.json()),
 		totalNoOfPages:paginationData,
+		editingUsers : []
 	});
 
 	const state  = getState();
@@ -51,15 +53,20 @@ function renderPagination(currentPage,totalNoOfPages){
 
 }
 
-function onSearchingUsers () {
+async function onSearchingUsers () {
+
+	const {pageno=1,size=10} = queryParams();
 
 	let searchValue = document.getElementById('search').value
-	console.log(searchValue);
+	
+  
+    const  state = setState({
+		...getState(),
+		users: await fetch(`/api/users?pageno=${pageno}&size=${size}&search=${searchValue}`).then((res) => res.json()),
+	});
 
-	let search = fetch(`/api/users/searching/${searchValue}`,{method : 'POST'}).then((res) => res.json());
 
-	init();
-
+	renderUsersTable(state.users);
 
 }
 
@@ -108,9 +115,12 @@ function onDeleteAll() {
 	init();
 }
 
-function onUpdateUser(id) {
-	let row = document.querySelectorAll('tr')[id];
+function onUpdateUser(userId,name,email,role) {
 
+
+	const updateUser = fetch(`/api/user/${userId}`,{method :'POST'}).then((res)=> res.json());
+
+   	init();
 
 }
 
@@ -154,6 +164,14 @@ function renderUsersTable(usersData) {
 
 }
 
+function onEditUser(userId) {
+	GLOBAL_STATE.state.editingUsers.push(userId);
+	renderUsersTable(state.users);
+
+}
+
+
+
 function renderUsersTBodyRows(usersData) {
     // const userSelected = GLOBAL_STATE.state.UserSelected;
     return usersData.map((userData, idx) => {
@@ -166,7 +184,9 @@ function renderUsersTBodyRows(usersData) {
     	`<td><input type='text' value ="${userData.email}"></td>` +
     	`<td><input type='text' value ="${userData.role}"></td>` +
     	`<td class="editDelete">` +
-    	`       <img id="edit" onclick="onUpdateUser(${userData.id})" src="/images/pencil-square.svg"/>` +
+    	   (!GLOBAL_STATE.state.editingUsers.includes(userData.id)?  
+    	`       <img id="edit" onclick="onEditUser(${userData.id})" src="/images/pencil-square.svg"/>` :
+    	` 		<img id="save" onclick="onUpdateUser(${userData.id})" src="/images/save.svg"/>`)+
     	`       <img id="delete" onclick="onDelete(${userData.id})" src="/images/trash.svg"/>` +
     	`</td>` +
     	`</tr>`;

@@ -16,16 +16,28 @@ var searchRecord;
 let tempSearch;
 let resUsersData;  
 
-const getPage = (pageno, size) => {
+const getPage = (pageno, size, search) => {
 
-    searchRecord = userData.filter(user=>user["show"] == true);
-    
-    if(searchRecord.length > 0 || (tempSearch != "" && tempSearch != undefined)){
-        resUsersData = searchRecord.slice(((pageno - 1)*size),pageno * size); 
-    }else{
-        resUsersData = userData.slice(((pageno - 1)*size),pageno * size); 
+    let tempSearch = search.toLowerCase();
+    let result = userData;
+
+    if(tempSearch != ""){
+
+         result = userData.filter((user) => {
+
+            if (user.name.toLowerCase().includes(tempSearch) || user.email.toLowerCase().includes(tempSearch)){
+
+                return true;
+
+            }
+
+        });
+
     }
-    return resUsersData;
+
+
+    return result.slice(((pageno - 1)*size),pageno * size); 
+
 
 };
 
@@ -91,27 +103,10 @@ const deleteAll = (ids) => {
 }
 
 const searchingUsers = (search) => {
-   tempSearch = search.toLowerCase();
 
-   userData.filter((user) => {
+  
 
-    if(tempSearch != ""){
-
-        if (user.name.toLowerCase().includes(tempSearch) || user.email.toLowerCase().includes(tempSearch)
-
-         || user.role.toLowerCase().includes(tempSearch)){
-
-          user.show=true;
-      return user;
-
-  }
-}
-user.show = false;
-      // return user;
-
-  });
-
-   return searchRecord.length;
+    return searchRecord.length;
 
 }
 

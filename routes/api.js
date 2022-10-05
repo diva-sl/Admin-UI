@@ -5,11 +5,11 @@ const users = require('../userData');
 
 /* GET users listing. */
 router.get('/users',(req, res) => {
-  const {pageno = 1, size = 10} = req.query;
+  const {pageno = 1, size = 10 , search = ''} = req.query;
   res.writeHead(200,{
     'Content-Type':'application/json'
   });
-  res.end(JSON.stringify(users.getPage(pageno,size))); 
+  res.end(JSON.stringify(users.getPage(pageno,size,search))); 
 });
 
 
