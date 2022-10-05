@@ -50,6 +50,16 @@ router.get('/pagination',(req,res) => {
 });
 
 
+router.post('/users/searching/:values',(req, res) => {
+
+  res.writeHead(200,{
+    'Content-Type':'application/json'
+  });
+  
+  res.end(JSON.stringify(users.searchingUsers(req.params.values)));
+
+});
+
 
 router.get('/users/search',(req, res) => {
 
@@ -69,8 +79,8 @@ router.post('/user/:id',(req,res) => {
     'Content-Type' : 'application/json'
   });
   
- users.saveUser(req.params.id, req.body)
-  res.end(JSON.stringify(users.editUser(req.query.user)));
+   users.saveUser(req.params.id, req.body)
+   res.end(JSON.stringify(users.editUser(req.query.user)));
 
 })
 

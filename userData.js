@@ -17,8 +17,14 @@ let tempSearch;
 let resUsersData;  
 
 const getPage = (pageno, size) => {
-    presentPage = pageno;
-    resUsersData = userData.slice(((pageno - 1)*size),pageno * size); 
+
+    searchRecord = userData.filter(user=>user["show"] == true);
+    
+    if(searchRecord.length > 0 || (tempSearch != "" && tempSearch != undefined)){
+        resUsersData = searchRecord.slice(((pageno - 1)*size),pageno * size); 
+    }else{
+        resUsersData = userData.slice(((pageno - 1)*size),pageno * size); 
+    }
     return resUsersData;
 
 };
@@ -53,13 +59,13 @@ const paginationSetup = () => {
 
     if(searchRecord.length > 0 || (tempSearch != "" && tempSearch != undefined)){
 
-       countOfPages=Math.ceil(searchRecord.length / countPerEachPage);    
+     countOfPages=Math.ceil(searchRecord.length / countPerEachPage);    
 
-   }else{
-      countOfPages=Math.ceil(Object.keys(userData).length / countPerEachPage);
-  }
-     
-  return countOfPages;
+ }else{
+  countOfPages=Math.ceil(Object.keys(userData).length / countPerEachPage);
+}
+
+return countOfPages;
 
 }
 
@@ -78,25 +84,49 @@ const deleteAll = (ids) => {
     userIds.map(id => {
 
         userData.splice(userData.findIndex(user => user.id === id ),1)
-    
+
     });
-   return userIds.length;
+    return userIds.length;
+
+}
+
+const searchingUsers = (search) => {
+   tempSearch = search.toLowerCase();
+
+   userData.filter((user) => {
+
+    if(tempSearch != ""){
+
+        if (user.name.toLowerCase().includes(tempSearch) || user.email.toLowerCase().includes(tempSearch)
+
+         || user.role.toLowerCase().includes(tempSearch)){
+
+          user.show=true;
+      return user;
+
+  }
+}
+user.show = false;
+      // return user;
+
+  });
+
+   return searchRecord.length;
 
 }
 
 
-
 const searchInUsers = (search) => {
 
- tempSearch = search.toLowerCase();
- presentPage = 1;
+   tempSearch = search.toLowerCase();
+   presentPage = 1;
 
- return userData.filter((user) => {
+   return userData.filter((user) => {
 
     if(tempSearch != ""){
         if (user.name.toLowerCase().includes(tempSearch) || user.email.toLowerCase().includes(tempSearch)
 
-           || user.role.toLowerCase().includes(tempSearch)){
+         || user.role.toLowerCase().includes(tempSearch)){
 
           user.show=true;
       return user;
@@ -133,16 +163,16 @@ return presentPage;
 
 const navigatePage = (index) => {
 
- if(index <= countOfPages){
-  if(index > presentPage){
+   if(index <= countOfPages){
+      if(index > presentPage){
 
-    changePage(index);
+        changePage(index);
 
-}else if(index < presentPage) {
+    }else if(index < presentPage) {
 
-    changePage(index);
+        changePage(index);
 
-}
+    }
 }
 return presentPage;
 
@@ -160,7 +190,7 @@ const selectUser = (index) => {
                 user.checked = true;
             }
         }else{
-         if(value == user.id){
+           if(value == user.id){
 
 
             delete user.checked;
@@ -200,8 +230,8 @@ return resUsersData.length;
 const selectAll = (select) => {
 
     if(select == 'true'){
-     selected = eachPageList; 
-     selected.forEach(check => {
+       selected = eachPageList; 
+       selected.forEach(check => {
         userData.filter(user => {
             if(check.id == user.id){
                 user.checked = true;
@@ -210,7 +240,7 @@ const selectAll = (select) => {
 
     });
 
- }else{
+   }else{
     userData.forEach(user => {
         delete user.checked;
     })
@@ -224,11 +254,11 @@ const editUser = (value) => {
 
     return userData.find(user => {
       if(user.id == value){
-       user.edit = true; 
-       return user;
-   }
+         user.edit = true; 
+         return user;
+     }
 
-});
+ });
 }
 
 
@@ -293,6 +323,7 @@ module.exports = {
     getPage,
     loadUsersPageList,
     paginationSetup,
+    searchingUsers,
     searchInUsers,
     jumpPage,
     navigatePage,
