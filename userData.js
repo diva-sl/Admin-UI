@@ -1,4 +1,4 @@
-const fs=require('fs')
+const fs = require('fs')
 
 // let mainSource = JSON.parse(fs.readFileSync('./userdata/mainDb.json').toString() || '{}')
 
@@ -6,26 +6,26 @@ let userData = JSON.parse(fs.readFileSync('./members.json').toString() || '{}');
 
 
 
-var presentPage=1;
+var presentPage = 1;
 var countOfPages = 0;
-let countPerEachPage =10;
+let countPerEachPage = 10;
 let eachPageList;
 
 var searchRecord;
 
 let tempSearch;
-let resUsersData;  
+let resUsersData;
 
 const getPage = (pageno, size, search) => {
 
     let tempSearch = search.toLowerCase();
     let result = userData;
 
-    if(tempSearch != ""){
+    if (tempSearch != "") {
 
-         result = userData.filter((user) => {
+        result = userData.filter((user) => {
 
-            if (user.name.toLowerCase().includes(tempSearch) || user.email.toLowerCase().includes(tempSearch)){
+            if (user.name.toLowerCase().includes(tempSearch) || user.email.toLowerCase().includes(tempSearch)) {
 
                 return true;
 
@@ -36,26 +36,26 @@ const getPage = (pageno, size, search) => {
     }
 
 
-    return result.slice(((pageno - 1)*size),pageno * size); 
+    return result.slice(((pageno - 1) * size), pageno * size);
 
 
 };
 
 
-const loadUsersPageList = () =>{
+const loadUsersPageList = () => {
 
-    searchRecord = userData.filter(user=>user["show"] == true);
-    
+    searchRecord = userData.filter(user => user["show"] == true);
+
     var start = ((presentPage - 1) * countPerEachPage);
     var end = start + countPerEachPage;
 
-    if(searchRecord.length > 0 || (tempSearch != "" && tempSearch != undefined)){
+    if (searchRecord.length > 0 || (tempSearch != "" && tempSearch != undefined)) {
 
-        eachPageList=searchRecord.slice(start,end);
+        eachPageList = searchRecord.slice(start, end);
 
-    }else{
+    } else {
 
-        eachPageList=userData.slice(start,end);
+        eachPageList = userData.slice(start, end);
 
 
     }
@@ -67,17 +67,17 @@ const loadUsersPageList = () =>{
 
 const paginationSetup = () => {
 
-    searchRecord = userData.filter(user=>user["show"] == true);
+    searchRecord = userData.filter(user => user["show"] == true);
 
-    if(searchRecord.length > 0 || (tempSearch != "" && tempSearch != undefined)){
+    if (searchRecord.length > 0 || (tempSearch != "" && tempSearch != undefined)) {
 
-     countOfPages=Math.ceil(searchRecord.length / countPerEachPage);    
+        countOfPages = Math.ceil(searchRecord.length / countPerEachPage);
 
- }else{
-  countOfPages=Math.ceil(Object.keys(userData).length / countPerEachPage);
-}
+    } else {
+        countOfPages = Math.ceil(Object.keys(userData).length / countPerEachPage);
+    }
 
-return countOfPages;
+    return countOfPages;
 
 }
 
@@ -85,7 +85,7 @@ return countOfPages;
 const deleteUser = (id) => {
 
 
-    resUsersData = userData.splice(userData.findIndex(user => user.id === id ),1);  
+    resUsersData = userData.splice(userData.findIndex(user => user.id === id), 1);
 
 }
 
@@ -95,7 +95,7 @@ const deleteAll = (ids) => {
 
     userIds.map(id => {
 
-        userData.splice(userData.findIndex(user => user.id === id ),1)
+        userData.splice(userData.findIndex(user => user.id === id), 1)
 
     });
     return userIds.length;
@@ -104,7 +104,7 @@ const deleteAll = (ids) => {
 
 const searchingUsers = (search) => {
 
-  
+
 
     return searchRecord.length;
 
@@ -113,26 +113,27 @@ const searchingUsers = (search) => {
 
 const searchInUsers = (search) => {
 
-   tempSearch = search.toLowerCase();
-   presentPage = 1;
+    tempSearch = search.toLowerCase();
+    presentPage = 1;
 
-   return userData.filter((user) => {
+    return userData.filter((user) => {
 
-    if(tempSearch != ""){
-        if (user.name.toLowerCase().includes(tempSearch) || user.email.toLowerCase().includes(tempSearch)
+        if (tempSearch != "") {
+            if (user.name.toLowerCase().includes(tempSearch) || user.email.toLowerCase().includes(tempSearch)
 
-         || user.role.toLowerCase().includes(tempSearch)){
+                ||
+                user.role.toLowerCase().includes(tempSearch)) {
 
-          user.show=true;
-      return user;
+                user.show = true;
+                return user;
 
-  }
-}
+            }
+        }
 
-user.show = false;
-      // return user;
+        user.show = false;
+        // return user;
 
-  });
+    });
 
 
 
@@ -141,35 +142,34 @@ user.show = false;
 
 const jumpPage = (index) => {
 
-  if(index > 1){
+    if (index > 1) {
 
-    presentPage = index;
-}
-else if(index < countOfPages){
+        presentPage = index;
+    } else if (index < countOfPages) {
 
-    presentPage = 1;
+        presentPage = 1;
 
-}
+    }
 
-return presentPage;
+    return presentPage;
 }
 
 
 
 const navigatePage = (index) => {
 
-   if(index <= countOfPages){
-      if(index > presentPage){
+    if (index <= countOfPages) {
+        if (index > presentPage) {
 
-        changePage(index);
+            changePage(index);
 
-    }else if(index < presentPage) {
+        } else if (index < presentPage) {
 
-        changePage(index);
+            changePage(index);
 
+        }
     }
-}
-return presentPage;
+    return presentPage;
 
 }
 
@@ -178,22 +178,22 @@ const selectUser = (index) => {
 
     userData.filter(user => {
 
-        if(check == 'true'){
+        if (check == 'true') {
 
-            if(value == user.id){
+            if (value == user.id) {
 
                 user.checked = true;
             }
-        }else{
-           if(value == user.id){
+        } else {
+            if (value == user.id) {
 
 
-            delete user.checked;
+                delete user.checked;
+            }
+
         }
 
-    }
-
-});
+    });
 
     return check;
 
@@ -201,92 +201,91 @@ const selectUser = (index) => {
 
 
 const selectAllUsers = (select) => {
-  if(select == 'true'){
-    resUsersData.filter(resUser => { 
+    if (select == 'true') {
+        resUsersData.filter(resUser => {
+            userData.forEach(user => {
+                if (resUser.id == user.id) {
+                    user.checked = true;
+                }
+            });
+
+        });
+
+    } else {
         userData.forEach(user => {
-          if(resUser.id == user.id){
-            user.checked = true;
-        } 
-    });
-
-    });
-
-}
-else{
-    userData.forEach(user => {
-        delete user.checked;
-    })
-}
-return resUsersData.length;
+            delete user.checked;
+        })
+    }
+    return resUsersData.length;
 
 }
 
 
 const selectAll = (select) => {
 
-    if(select == 'true'){
-       selected = eachPageList; 
-       selected.forEach(check => {
-        userData.filter(user => {
-            if(check.id == user.id){
-                user.checked = true;
-            } 
+    if (select == 'true') {
+        selected = eachPageList;
+        selected.forEach(check => {
+            userData.filter(user => {
+                if (check.id == user.id) {
+                    user.checked = true;
+                }
+            });
+
         });
 
-    });
+    } else {
+        userData.forEach(user => {
+            delete user.checked;
+        })
+    }
 
-   }else{
-    userData.forEach(user => {
-        delete user.checked;
-    })
-}
-
-return selected;
+    return selected;
 
 }
 
 const editUser = (value) => {
 
     return userData.find(user => {
-      if(user.id == value){
-         user.edit = true; 
-         return user;
-     }
+        if (user.id == value) {
+            user.edit = true;
+            return user;
+        }
 
- });
+    });
 }
 
 
 const saveUser = (value) => {
 
-    var save = value[value.length-1];
+    var save = value[value.length - 1];
     userData.map(user => {
-        if(user.id == save){
+        if (user.id == save) {
             user.name = value[0];
             user.email = value[1];
             user.role = value[2];
         }
-    })  
+    })
 
 }
 
-const checkData =(data) => {
+const checkData = (data) => {
 
-    var pattern = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;; 
-    
-    var result = pattern.test(data[1]) && (data[2] == 'admin' || data[2]=='member');
-    
+    var pattern = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;;
+
+    var result = pattern.test(data[1]) && (data[2] == 'admin' || data[2] == 'member');
+
     return result;
 }
 
 const deleteUser1 = (value) => {
 
-    userData.map((user,idx) => {
-        if(user.id == value){
-            userData.splice(idx,1);
+    userData.map((user, idx) => {
+        if (user.id == value) {
+            userData.splice(idx, 1);
         }
 
-    });   
+    });
 
 }
 
@@ -295,15 +294,15 @@ const deleteAll1 = () => {
 
     let count = 0;
 
-    for(var i=0;i<userData.length;i++){
+    for (var i = 0; i < userData.length; i++) {
 
-        if(userData[i].hasOwnProperty('checked')){
+        if (userData[i].hasOwnProperty('checked')) {
 
-            userData.splice(i,1);
+            userData.splice(i, 1);
 
-            count +=1; 
+            count += 1;
 
-            i--;          
+            i--;
 
         }
     }
@@ -332,8 +331,3 @@ module.exports = {
     deleteAll
 
 }
-
-
-
-
-
