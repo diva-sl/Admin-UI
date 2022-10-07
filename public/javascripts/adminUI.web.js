@@ -13,7 +13,9 @@ function setState(newState) {
 
 async function init() {
 
-    const {pageno = 1, size = 10} = queryParams();
+    const {
+        pageno = 1, size = 10
+    } = queryParams();
 
 
     const paginationData = await fetch('/api/pagination').then((res) => res.json());
@@ -54,7 +56,9 @@ function renderPagination(currentPage, totalNoOfPages) {
 
 async function onSearchingUsers() {
 
-    const {pageno = 1, size = 10} = queryParams();
+    const {
+        pageno = 1, size = 10
+    } = queryParams();
 
     let searchValue = document.getElementById('search').value
 
@@ -118,23 +122,30 @@ function onDeleteAll() {
 }
 
 function onUpdateUser(userId, name, email, role) {
-
+      name = document.getElementById('name'+userId).value;
+ 	  email =document.getElementById('email'+userId).value;
+ 	  role = document.getElementById('role'+userId).value;
     const updateUser = fetch(`/api/user/${userId}`, {
-        method: 'POST'
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({'Name':name,'Email':email,'Role':role})
+
     }).then((res) => res.json());
 
-    GLOBAL_STATE.state.editingUsers.splice(GLOBAL_STATE.state.editingUsers.indexOf(userId),1);
+    GLOBAL_STATE.state.editingUsers.splice(GLOBAL_STATE.state.editingUsers.indexOf(userId), 1);
 
-    renderUsersTable(GLOBAL_STATE.state.users);
+    // renderUsersTable(GLOBAL_STATE.state.users);
 
-    // init();
+    init();
 
 }
 
 function onEditUser(userId) {
-    
+
     GLOBAL_STATE.state.editingUsers.push(JSON.stringify(userId));
-    
+
     renderUsersTable(GLOBAL_STATE.state.users);
 
 }
@@ -169,19 +180,19 @@ function renderUsersTBodyRows(usersData) {
     return usersData.map((userData, idx) => {
 
         const tableEdit = GLOBAL_STATE.state.editingUsers.includes(userData.id);
-       
+
         let html = `<tr ${userData.hasOwnProperty('checked') ? 'class="selected"' : ''}>` +
             `<td><input type="checkbox" ` +
             `       ${userData.hasOwnProperty('checked') ? 'checked="true"' : ''}` +
             `       value=${userData.id}` +
-            `       onclick="onUserSelect(${idx})"></td>` + 
-            `<td><input type='text' ${tableEdit ? 'class="edit"' :''} value ="${userData.name}"></td>` +
-            `<td><input type='text' ${tableEdit ? 'class="edit"' :''} value ="${userData.email}"></td>` +
-            `<td><input type='text' ${tableEdit ? 'class="edit"' :''} value ="${userData.role}"></td>` +
+            `       onclick="onUserSelect(${idx})"></td>` +
+            `<td><input type='text' ${tableEdit ? 'class="edit"' :''} id="name`+`${idx+1}" value ="${userData.name}"></td>` +
+            `<td><input type='text' ${tableEdit ? 'class="edit"' :''} id="email`+`${idx+1}" value ="${userData.email}"></td>` +
+            `<td><input type='text' ${tableEdit ? 'class="edit"' :''} id="role`+`${idx+1}" value ="${userData.role}"></td>` +
             `<td class="editDelete">` +
             (!tableEdit ?
                 `       <img id="edit" onclick="onEditUser(${userData.id})" src="/images/pencil-square.svg"/>` :
-                ` 		<img id="save" onclick="onUpdateUser(${userData.id})" src="/images/save.svg"/>`) +
+                ` 		<img id="save" onclick="onUpdateUser(${userData.id},'${userData.name}','${userData.email}','${userData.role}')" src="/images/save.svg"/>`) +
             `       <img id="delete" onclick="onDelete(${userData.id})" src="/images/trash.svg"/>` +
             `</td>` +
             `</tr>`;

@@ -81,8 +81,9 @@ router.post('/user/:id', (req, res) => {
         'Content-Type': 'application/json'
     });
 
-    users.saveUser(req.params.id, req.body)
-    res.end(JSON.stringify(users.editUser(req.query.user)));
+    users.updateUser(req.params.id, req.body);
+    
+    res.end(JSON.stringify('ok'));
 
 })
 

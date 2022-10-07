@@ -255,6 +255,17 @@ const editUser = (value) => {
     });
 }
 
+const updateUser = (id,userInfo) => {
+
+    userData.map(user => {
+        if (user.id == id) {
+            user.name = userInfo.Name;
+            user.email = userInfo.Email;
+            user.role = userInfo.Role;
+        }
+    })
+
+}
 
 const saveUser = (value) => {
 
@@ -325,6 +336,7 @@ module.exports = {
     selectAll,
     selectAllUsers,
     editUser,
+    updateUser,
     saveUser,
     checkData,
     deleteUser,
