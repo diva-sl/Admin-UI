@@ -122,15 +122,19 @@ function onDeleteAll() {
 }
 
 function onUpdateUser(userId, name, email, role) {
-      name = document.getElementById('name'+userId).value;
- 	  email =document.getElementById('email'+userId).value;
- 	  role = document.getElementById('role'+userId).value;
+    name = document.getElementById('name' + userId).value;
+    email = document.getElementById('email' + userId).value;
+    role = document.getElementById('role' + userId).value;
     const updateUser = fetch(`/api/user/${userId}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({'Name':name,'Email':email,'Role':role})
+        body: JSON.stringify({
+            'Name': name,
+            'Email': email,
+            'Role': role
+        })
 
     }).then((res) => res.json());
 
@@ -186,9 +190,9 @@ function renderUsersTBodyRows(usersData) {
             `       ${userData.hasOwnProperty('checked') ? 'checked="true"' : ''}` +
             `       value=${userData.id}` +
             `       onclick="onUserSelect(${idx})"></td>` +
-            `<td><input type='text' ${tableEdit ? 'class="edit"' :''} id="name`+`${idx+1}" value ="${userData.name}"></td>` +
-            `<td><input type='text' ${tableEdit ? 'class="edit"' :''} id="email`+`${idx+1}" value ="${userData.email}"></td>` +
-            `<td><input type='text' ${tableEdit ? 'class="edit"' :''} id="role`+`${idx+1}" value ="${userData.role}"></td>` +
+            `<td><input type='text' ${tableEdit ? 'class="edit"' :''} id="name` + `${userData.id}" value ="${userData.name}"></td>` +
+            `<td><input type='text' ${tableEdit ? 'class="edit"' :''} id="email` + `${userData.id}" value ="${userData.email}"></td>` +
+            `<td><input type='text' ${tableEdit ? 'class="edit"' :''} id="role` + `${userData.id}" value ="${userData.role}"></td>` +
             `<td class="editDelete">` +
             (!tableEdit ?
                 `       <img id="edit" onclick="onEditUser(${userData.id})" src="/images/pencil-square.svg"/>` :
@@ -213,19 +217,19 @@ function queryParams() {
 
 
 
-function onJumpPage(pageno) {
+// function onJumpPage(pageno) {
 
-    const pageNumber = fetch('/api/jumpPage?page=' + pageno).then((res) => res.json());
+//     const pageNumber = fetch('/api/jumpPage?page=' + pageno).then((res) => res.json());
 
-    // setState({
-    //      currentPage: pageno,
+//     // setState({
+//     //      currentPage: pageno,
 
-    //  });
-    // console.log(pageNumber);
-    // console.log(getState());
-    init();
-    const state = getState();
-    renderUsersTable(state.users);
-    renderPagination(state.currentPage, state.totalNoOfPages);
+//     //  });
+//     // console.log(pageNumber);
+//     // console.log(getState());
+//     init();
+//     const state = getState();
+//     renderUsersTable(state.users);
+//     renderPagination(state.currentPage, state.totalNoOfPages);
 
-}
+// }

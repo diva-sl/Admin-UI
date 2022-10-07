@@ -42,27 +42,6 @@ const getPage = (pageno, size, search) => {
 };
 
 
-const loadUsersPageList = () => {
-
-    searchRecord = userData.filter(user => user["show"] == true);
-
-    var start = ((presentPage - 1) * countPerEachPage);
-    var end = start + countPerEachPage;
-
-    if (searchRecord.length > 0 || (tempSearch != "" && tempSearch != undefined)) {
-
-        eachPageList = searchRecord.slice(start, end);
-
-    } else {
-
-        eachPageList = userData.slice(start, end);
-
-
-    }
-    return eachPageList;
-
-
-}
 
 
 const paginationSetup = () => {
@@ -140,39 +119,6 @@ const searchInUsers = (search) => {
 }
 
 
-const jumpPage = (index) => {
-
-    if (index > 1) {
-
-        presentPage = index;
-    } else if (index < countOfPages) {
-
-        presentPage = 1;
-
-    }
-
-    return presentPage;
-}
-
-
-
-const navigatePage = (index) => {
-
-    if (index <= countOfPages) {
-        if (index > presentPage) {
-
-            changePage(index);
-
-        } else if (index < presentPage) {
-
-            changePage(index);
-
-        }
-    }
-    return presentPage;
-
-}
-
 
 const selectUser = (index) => {
 
@@ -221,28 +167,6 @@ const selectAllUsers = (select) => {
 }
 
 
-const selectAll = (select) => {
-
-    if (select == 'true') {
-        selected = eachPageList;
-        selected.forEach(check => {
-            userData.filter(user => {
-                if (check.id == user.id) {
-                    user.checked = true;
-                }
-            });
-
-        });
-
-    } else {
-        userData.forEach(user => {
-            delete user.checked;
-        })
-    }
-
-    return selected;
-
-}
 
 const editUser = (value) => {
 
@@ -255,7 +179,7 @@ const editUser = (value) => {
     });
 }
 
-const updateUser = (id,userInfo) => {
+const updateUser = (id, userInfo) => {
 
     userData.map(user => {
         if (user.id == id) {
@@ -267,18 +191,6 @@ const updateUser = (id,userInfo) => {
 
 }
 
-const saveUser = (value) => {
-
-    var save = value[value.length - 1];
-    userData.map(user => {
-        if (user.id == save) {
-            user.name = value[0];
-            user.email = value[1];
-            user.role = value[2];
-        }
-    })
-
-}
 
 const checkData = (data) => {
 
@@ -289,55 +201,16 @@ const checkData = (data) => {
     return result;
 }
 
-const deleteUser1 = (value) => {
-
-    userData.map((user, idx) => {
-        if (user.id == value) {
-            userData.splice(idx, 1);
-        }
-
-    });
-
-}
-
-
-const deleteAll1 = () => {
-
-    let count = 0;
-
-    for (var i = 0; i < userData.length; i++) {
-
-        if (userData[i].hasOwnProperty('checked')) {
-
-            userData.splice(i, 1);
-
-            count += 1;
-
-            i--;
-
-        }
-    }
-    return count;
-
-}
-
-
 
 
 module.exports = {
     getPage,
-    loadUsersPageList,
     paginationSetup,
     searchingUsers,
-    searchInUsers,
-    jumpPage,
-    navigatePage,
     selectUser,
-    selectAll,
     selectAllUsers,
     editUser,
     updateUser,
-    saveUser,
     checkData,
     deleteUser,
     deleteAll
