@@ -1,24 +1,24 @@
 <html>
-<head>
-  <link rel="stylesheet" href="stylesheets/style.css">
-</head>
-<body>
-  <h2>ADMIN-UI</h2>
-  <div id="snackbar"></div>
-  <form class="searchBox">
-    <input type="search" class="search" id ="search" placeholder="Search by Name,Email and Role..." onkeyup="onSearchingUsers()">
-  </form>
-  <div id="usersTableDiv">
-  </div>
-<div id="delete-all">
-<button class ="delete-All" onclick="onDeleteAll()"><image src="../images/trash.svg"> All </button>
-</div>
-  <div id="pagination" class="pagination">
-  </div>
-  <script src="./javascripts/adminUI.web.js">
-  </script>
-  <script type = "text/javascript">
+  <head>
+    <link rel="stylesheet" href="stylesheets/style.css">
+  </head>
+  <body>
+    <h2>ADMIN-UI</h2>
+    <div id="snackbar"></div>
+    <form class="searchBox">
+      <input type="search" class="search" id ="search" placeholder="Search by Name,Email and Role..." onkeyup="onSearchingUsers()">
+    </form>
+    <div id="usersTableDiv">
+    </div>
+    <div id="delete-all">
+      <button class ="delete-All" onclick="onDeleteAll()"><image src="../images/trash.svg"> All </button>
+    </div>
+    <div id="pagination" class="pagination">
+    </div>
+    <script src="./javascripts/adminUI.web.js">
+    </script>
+    <script type = "text/javascript">
     init();
-  </script>
-</body>
+    </script>
+  </body>
 </html>

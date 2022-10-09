@@ -10,20 +10,16 @@ function setState(newState) {
 }
 
 
-
 async function init() {
 
     const {
         pageno = 1, size = 10
     } = queryParams();
 
-
-    const paginationData = await fetch('/api/pagination').then((res) => res.json());
-
     setState({
         currentPage: pageno,
         users: await fetch(`/api/users?pageno=${pageno}&size=${size}`).then((res) => res.json()),
-        totalNoOfPages: paginationData,
+        totalNoOfPages: await fetch('/api/pagination').then((res) => res.json()),
         editingUsers: []
     });
 
@@ -66,15 +62,15 @@ async function onSearchingUsers() {
     const state = setState({
         ...getState(),
         users: await fetch(`/api/users?pageno=${pageno}&size=${size}&search=${searchValue}`).then((res) => res.json()),
+    	totalNoOfPages : await fetch('/api/pagination').then((res) => res.json())
+    	
     });
-
     renderUsersTable(state.users);
-
+    renderPagination(state.currentPage, state.totalNoOfPages);
 }
 
 
 function onUserSelect(index) {
-    // GLOBAL_STATE.state.userSelected = !GLOBAL_STATE.state.userSelected;
     if (GLOBAL_STATE.state.users[index].checked == undefined) {
         GLOBAL_STATE.state.users[index].checked = true;
     } else {
@@ -121,11 +117,11 @@ function onDeleteAll() {
     init();
 }
 
-function onUpdateUser(userId, name, email, role) {
-    name = document.getElementById('name' + userId).value;
-    email = document.getElementById('email' + userId).value;
-    role = document.getElementById('role' + userId).value;
-    const updateUser = fetch(`/api/user/${userId}`, {
+async function onUpdateUser(userId) {
+    const name = document.getElementById('name-' + userId).value;
+    const email = document.getElementById('email-' + userId).value;
+    const role = document.getElementById('role-' + userId).value;
+    await fetch(`/api/user/${userId}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -138,11 +134,15 @@ function onUpdateUser(userId, name, email, role) {
 
     }).then((res) => res.json());
 
-    GLOBAL_STATE.state.editingUsers.splice(GLOBAL_STATE.state.editingUsers.indexOf(userId), 1);
+   const state = {...getState()};
+	state.editingUsers = state.editingUsers.filter(x => x != userId);
+	state.users =[...state.users];
+    const indexFn = user => user.id == userId;
+    const userIndex = state.users.findIndex(indexFn);
+    state.users[userIndex] = {...state.users[userIndex],name:name,email:email,role:role};
+    setState(state);
+    renderUsersTable(state.users);
 
-    // renderUsersTable(GLOBAL_STATE.state.users);
-
-    init();
 
 }
 
@@ -190,13 +190,13 @@ function renderUsersTBodyRows(usersData) {
             `       ${userData.hasOwnProperty('checked') ? 'checked="true"' : ''}` +
             `       value=${userData.id}` +
             `       onclick="onUserSelect(${idx})"></td>` +
-            `<td><input type='text' ${tableEdit ? 'class="edit"' :''} id="name` + `${userData.id}" value ="${userData.name}"></td>` +
-            `<td><input type='text' ${tableEdit ? 'class="edit"' :''} id="email` + `${userData.id}" value ="${userData.email}"></td>` +
-            `<td><input type='text' ${tableEdit ? 'class="edit"' :''} id="role` + `${userData.id}" value ="${userData.role}"></td>` +
+            `<td><input type='text' ${tableEdit ? 'class="edit"' :''} id="name-${userData.id}" value ="${userData.name}"></td>` +
+            `<td><input type='text' ${tableEdit ? 'class="edit"' :''} id="email-${userData.id}" value ="${userData.email}"></td>` +
+            `<td><input type='text' ${tableEdit ? 'class="edit"' :''} id="role-${userData.id}" value ="${userData.role}"></td>` +
             `<td class="editDelete">` +
             (!tableEdit ?
                 `       <img id="edit" onclick="onEditUser(${userData.id})" src="/images/pencil-square.svg"/>` :
-                ` 		<img id="save" onclick="onUpdateUser(${userData.id},'${userData.name}','${userData.email}','${userData.role}')" src="/images/save.svg"/>`) +
+                ` 		<img id="save" onclick="onUpdateUser(${userData.id})" src="/images/save.svg"/>`) +
             `       <img id="delete" onclick="onDelete(${userData.id})" src="/images/trash.svg"/>` +
             `</td>` +
             `</tr>`;

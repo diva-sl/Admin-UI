@@ -52,28 +52,6 @@ router.get('/pagination', (req, res) => {
 });
 
 
-router.post('/users/searching/:values', (req, res) => {
-
-    res.writeHead(200, {
-        'Content-Type': 'application/json'
-    });
-
-    res.end(JSON.stringify(users.searchingUsers(req.params.values)));
-
-});
-
-
-router.get('/users/search', (req, res) => {
-
-    res.writeHead(200, {
-        'Content-Type': 'application/json'
-    });
-
-
-    res.end(JSON.stringify(users.searchInUsers(req.query.search)));
-});
-
-//edit user
 router.post('/user/:id', (req, res) => {
 
     res.writeHead(200, {
@@ -86,23 +64,6 @@ router.post('/user/:id', (req, res) => {
     res.end(JSON.stringify('ok'));
 
 })
-
-router.post('/saveUser', (req, res) => {
-
-    if (users.checkData(req.body)) {
-        res.writeHead(200, {
-
-            'Content-Type': 'application/json'
-        });
-        users.saveUser(req.body)
-        res.end(JSON.stringify('ok'));
-    } else {
-        res.end(JSON.stringify('invalid enteries...'));
-    }
-
-})
-
-
 
 
 module.exports = router;
