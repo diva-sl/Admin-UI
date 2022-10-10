@@ -67,8 +67,12 @@ input[type ="text"].edit {
   border: 1px solid #555;
 
 }
-
-
+/*input[type="checkbox"]
+{
+    margin-left: 20%;
+    vertical-align: middle;
+}
+*/
 table.table1   {
 
   margin-left: auto;

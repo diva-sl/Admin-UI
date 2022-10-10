@@ -1,14 +1,15 @@
-const GLOBAL_STATE = {};
+const stateGenerator = () => {
+    const GLOBAL_STATE = {};
+    const getState = () => GLOBAL_STATE.state;
+    const setState = (newState) => {
 
-function getState() {
-    return GLOBAL_STATE.state;
+        GLOBAL_STATE.state = newState;
+        return newState;
+    }
+    return [getState, setState];
 }
 
-function setState(newState) {
-    GLOBAL_STATE.state = newState;
-    return newState;
-}
-
+const [getState, setState] = stateGenerator();
 
 async function init() {
 
@@ -28,7 +29,6 @@ async function init() {
     renderUsersTable(state.users);
     renderPagination(state.currentPage, state.totalNoOfPages);
 }
-
 
 function renderPagination(currentPage, totalNoOfPages) {
 
@@ -62,8 +62,8 @@ async function onSearchingUsers() {
     const state = setState({
         ...getState(),
         users: await fetch(`/api/users?pageno=${pageno}&size=${size}&search=${searchValue}`).then((res) => res.json()),
-    	totalNoOfPages : await fetch('/api/pagination').then((res) => res.json())
-    	
+        totalNoOfPages: await fetch('/api/pagination').then((res) => res.json())
+
     });
     renderUsersTable(state.users);
     renderPagination(state.currentPage, state.totalNoOfPages);
@@ -71,24 +71,26 @@ async function onSearchingUsers() {
 
 
 function onUserSelect(index) {
-    if (GLOBAL_STATE.state.users[index].checked == undefined) {
-        GLOBAL_STATE.state.users[index].checked = true;
+    if (getState().users[index].checked == undefined) {
+        getState().users[index].checked = true;
     } else {
-        delete GLOBAL_STATE.state.users[index].checked
+        delete getState().users[index].checked
     }
-    renderUsersTable(GLOBAL_STATE.state.users);
+    renderUsersTable(getState().users);
 }
 
 function onAllUsersSelect() {
-    GLOBAL_STATE.state.allUsersSelected = !GLOBAL_STATE.state.allUsersSelected;
-    GLOBAL_STATE.state.users.map(user => {
-        if (GLOBAL_STATE.state.allUsersSelected) {
+
+    getState().allUsersSelected = !getState().allUsersSelected;
+    getState().users.map(user => {
+        if (getState().allUsersSelected) {
             user.checked = true;
         } else {
             delete user.checked
         }
     });
-    renderUsersTable(GLOBAL_STATE.state.users);
+    // console.log(getState().users);
+    renderUsersTable(getState().users);
 }
 
 function onDelete(id) {
@@ -104,7 +106,7 @@ function onDeleteAll() {
 
     const userIds = [];
 
-    GLOBAL_STATE.state.users.map((user) => {
+    getState().users.map((user) => {
         if (user.checked == true) {
             userIds.push(user.id);
         }
@@ -134,12 +136,16 @@ async function onUpdateUser(userId) {
 
     }).then((res) => res.json());
 
-   const state = {...getState()};
-	state.editingUsers = state.editingUsers.filter(x => x != userId);
-	state.users =[...state.users];
+    const state = {...getState()};
+    state.editingUsers = state.editingUsers.filter(x => x != userId);
+    state.users = [...state.users];
     const indexFn = user => user.id == userId;
     const userIndex = state.users.findIndex(indexFn);
-    state.users[userIndex] = {...state.users[userIndex],name:name,email:email,role:role};
+    state.users[userIndex] = {...state.users[userIndex],
+        name: name,
+        email: email,
+        role: role
+    };
     setState(state);
     renderUsersTable(state.users);
 
@@ -148,16 +154,16 @@ async function onUpdateUser(userId) {
 
 function onEditUser(userId) {
 
-    GLOBAL_STATE.state.editingUsers.push(JSON.stringify(userId));
-
-    renderUsersTable(GLOBAL_STATE.state.users);
+    getState().editingUsers.push(JSON.stringify(userId));
+    renderUsersTable(getState().users);
 
 }
 
 
 
 function renderUsersTable(usersData) {
-    const allSelected = GLOBAL_STATE.state.allUsersSelected;
+
+    const allSelected = getState.allUsersSelected;
     const usersTableDiv = document.getElementById('usersTableDiv');
     usersTableDiv.innerHTML = '<table class="table1" id="table">' +
         "<thead>" +
@@ -180,10 +186,9 @@ function renderUsersTable(usersData) {
 
 
 function renderUsersTBodyRows(usersData) {
-    // const userSelected = GLOBAL_STATE.state.UserSelected;
+    const userSelected = getState().UserSelected;
     return usersData.map((userData, idx) => {
-
-        const tableEdit = GLOBAL_STATE.state.editingUsers.includes(userData.id);
+        const tableEdit = getState().editingUsers.includes(userData.id);
 
         let html = `<tr ${userData.hasOwnProperty('checked') ? 'class="selected"' : ''}>` +
             `<td><input type="checkbox" ` +
